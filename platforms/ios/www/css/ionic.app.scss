@@ -1,0 +1,274 @@
+/*
+To customize the look and feel of Ionic, you can override the variables
+in ionic's _variables.scss file.
+*/
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Default Colors
+// -------------------------------
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #4a87ee !default;
+$calm:                            #43cee6 !default;
+$balanced:                        #66cc33 !default;
+$energized:                       #f0b840 !default;
+$assertive:                       #ef4e3a !default;
+$royal:                           #8a6de9 !default;
+$dark:                            #444 !default;
+
+// Overrides
+$positive: #356b95;
+$calm: #953535;
+$stable: #16a085;
+
+// Include all of Ionic
+@import "../lib/ionic/scss/ionic";
+
+
+//---------------------
+// Base Elements
+//----------------------------------------------------------------------------------------------
+body {
+	background-color: #ecf0f1;
+	color: #2c3e50;
+}
+h1, h2, h3 {color: #356b95;}
+.scroll > h1,
+.scroll > h2,
+.scroll > h3,
+.scroll > p {
+	padding: 0 8px;
+}
+p {
+	color: #2c3e50;
+}
+
+//---------------------
+// Navigation
+//----------------------------------------------------------------------------------------------
+.menu-left i.icon {
+	margin-right: 6px;
+	color: #999;
+}
+
+.item-divider h3 {
+	text-align: center;
+	font-weight: bold;
+	color: #454545;
+}
+
+//---------------------
+// Home
+//----------------------------------------------------------------------------------------------
+#home-page {
+	.item-text-wrap {
+		padding: 0;
+	}
+	img {
+		width: 100%;
+		padding: 18px;
+	}
+	.item-thumbnail-left img {
+		width: 82px;
+		height: 82px;
+		padding: 0;
+		margin: 0;
+		border-radius: 41px;
+		border: 1px solid #ccc;
+	}
+	h2 {
+		font-size: 1.2em;
+		font-weight: 400;
+		text-align: center;
+		margin-top: 0;
+	}
+} 
+
+.bar-positive .button.icon {
+	color: #eee;
+}
+
+//---------------------
+// Current Issue
+//----------------------------------------------------------------------------------------------
+#currentIssue-hero {
+	img.coverImg {
+		width: 148px;
+		padding: 0;
+		margin-top: 0px;
+		display: block;
+		margin: auto;
+		border: 1px solid #bbb;
+	}
+	img.titleImg {
+		max-width: 80%;
+		max-height: 88px;
+		margin: auto;
+		margin-bottom: 12px;
+		display: block;
+
+	}
+	p {text-align: center; padding-top: 4px;}
+	.button-bar {
+		margin-top: 12px;
+	}
+}
+
+.current-issue {
+	&.list h3 {
+		color: #666;
+		font-weight: bold;
+	}
+	h4 {
+		font-size: 1.1rem;
+		color: $positive;
+		white-space: normal;
+		margin-left: 0;
+		padding-left: 0;
+		i {
+			color: $positive;
+		}
+	}
+	h5 {
+		font-size: 0.8rem;
+		font-style: italic;
+		font-weight: light;
+		color: #015c52;
+	}
+	p {
+		font-size: 0.9rem;
+		em {
+			font-style: italic;
+		}
+	}
+}
+
+
+//---------------------
+// Current Issue - Article View
+//----------------------------------------------------------------------------------------------
+#currentIssue {
+	background: #ecf0f1;
+
+	.article-view {
+		padding-bottom: 8px;
+	 	border-bottom: 1px solid #dedede;
+
+	 	h1, h2, h3, h4, h5 {
+	 		margin: 0;
+	 	}
+	 	h4, h5 {
+	 		color: #015c52;
+	 	}
+	 	h1 {
+	 		margin-bottom: -20px;
+	 		padding-top: 48px;
+			background-image: -webkit-gradient(
+				linear, left top, left bottom,
+				from(rgba(53, 107, 149,1.0)),
+				to(rgba(53, 107, 149,1.0))
+			);
+			//text-shadow: 1px 1px #ffffff;
+			padding-bottom: 0px;
+			color: #ecf0f1;
+		}
+		h2 {
+			background-image: -webkit-gradient(
+				linear, left top, left bottom,
+				from(rgba(53, 107, 149,1.0)),
+				to(rgba(143, 172, 194,1.0))
+			);
+			padding-top: 38px;
+			padding-bottom: 12px;
+			color: #2c3e50;
+		}
+		h3 {
+			background-image: -webkit-gradient(
+				linear, left top, left bottom,
+				from(rgba(143, 172, 194,1.0)),
+				to(rgba(236, 240, 241,1.0))
+			);
+			padding-top: 12px;
+			padding-bottom: 12px;
+			color: #2c3e50;
+
+		}
+		h6 {display: none;}
+		h4, h5, p, img {
+			color: #2c3e50;
+			background: #ecf0f1;
+			margin:0;
+		}
+		img {
+			display: block;
+			margin:auto;
+			margin-top: 8px;
+			border:1px solid #666;
+			-moz-box-shadow:    3px 3px 5px 0 #999;
+			-webkit-box-shadow: 3px 3px 5px 0 #999;
+			box-shadow:         3px 3px 5px 0 #999;
+		}
+	}
+}
+
+.article-view > h1,
+.article-view > h2,
+.article-view > h3,
+.article-view > h4,
+.article-view > h5,
+.article-view > h6,
+.article-view > p {
+	padding: 0 8px;
+}
+
+.article-view {
+	
+	p {
+		padding-top: 18px;
+		background: #fff;
+		z-index: 50;
+	}
+	.h6_om {
+		display: none;
+	}
+	h1 {
+		font-size: 2.4em;
+		text-align: center;
+		font-weight: light;
+		color: #000;
+	}
+	h2 {
+		font-style: italic;
+		font-size: 1.0em;
+		color: #000;
+		text-align: center;
+	}
+	h3 {
+		font-size: 0.9em;
+		color: #000;
+		margin-bottom: 0px;
+		text-align: center;
+		font-weight: bold;
+	}
+	img {
+		width: 140px;
+		margin: auto;
+	}
+}
+
+//---------------------
+// Newsletters
+//----------------------------------------------------------------------------------------------
+
+#newsletters {
+	h2 {
+		font-size: 22px;
+		padding-top: 6px;
+	}
+}
+
+
+

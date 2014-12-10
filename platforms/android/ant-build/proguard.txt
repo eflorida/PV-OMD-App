@@ -1,0 +1,27 @@
+# view AndroidManifest.xml #generated:29
+-keep class com.arellomobile.android.push.AlarmReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:28
+-keep class com.arellomobile.android.push.GeoLocationService { <init>(...); }
+
+# view AndroidManifest.xml #generated:17
+-keep class com.arellomobile.android.push.MessageActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:27
+-keep class com.arellomobile.android.push.PushGCMIntentService { <init>(...); }
+
+# view AndroidManifest.xml #generated:18
+-keep class com.arellomobile.android.push.PushHandlerActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:16
+-keep class com.arellomobile.android.push.PushWebview { <init>(...); }
+
+# view AndroidManifest.xml #generated:19
+-keep class com.facebook.LoginActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:20
+-keep class com.google.android.gcm.GCMBroadcastReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:6
+-keep class com.pentavision.omd.pushwoosh.newIssue.OMD { <init>(...); }
+

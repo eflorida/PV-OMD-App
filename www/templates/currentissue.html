@@ -1,0 +1,52 @@
+<ion-view title="Current Issue">
+	<ion-nav-buttons side="left">
+		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+	</ion-nav-buttons>
+	<ion-content class="has-header" ng-repeat="metaContentSet in localCurrentIssueJSON | filter:category='metaData'">
+		<button
+		class="button button-stable button-block"
+		ng-click="getJSONP();"
+		ng-show="!localCurrentIssueJSON[0].isLatest"
+		>New Issue Available - Download Now</button>
+
+		<div
+		class="item"
+		id="currentIssue-hero"
+		
+		>
+			<img src="img/cover.jpg" class="coverImg" />
+			<div class="clearfix"></div>
+			<p>{{metaContentSet.displayDate}}</p>
+			<div class="clearfix"></div>
+		</div>
+
+		<ion-list class="list current-issue">
+		
+			<div class="item item-divider features" ng-show="metaContentSet.isDownloaded">
+				<h3>Features</h3>
+			</div>
+			<ion-item
+			class="item features"
+			href="#/app/currentissue-article/{{featuredContentSet.folder}}/{{featuredContentSet.partialUrl}}"
+			ng-repeat="featuredContentSet in localCurrentIssueJSON | filter:category='Feature' | filter:articleID"
+			>
+				<h4><i class="ionic-icon ion-bookmark" ng-show="{{featuredContentSet.saved}}"></i>{{featuredContentSet.title}}</h4>
+				<h5>{{featuredContentSet.subTitle}}</h5>
+				<p><em>By:</em> {{featuredContentSet.author}}</p>
+			</ion-item>
+
+			<div class="item item-divider departments" ng-show="metaContentSet.isDownloaded">
+				<h3>Departments</h3>
+			</div>
+			<ion-item
+			class="item departments"
+			href="#/app/currentissue-article/{{departmentsContentSet.folder}}/{{departmentsContentSet.partialUrl}}"
+			ng-repeat="departmentsContentSet in localCurrentIssueJSON | filter:category='Department' | filter:articleID"
+			>
+				<h4><i class="ionic-icon"></i>{{departmentsContentSet.title}}</h4>
+				<h5>{{departmentsContentSet.subTitle}}</h5>
+				<p><em>By:</em> {{departmentsContentSet.author}}</p>
+			</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-view>

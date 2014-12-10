@@ -1,0 +1,14 @@
+<ion-view title="Article">
+	<ion-nav-buttons side="right">
+		<button class="button button-icon icon ion-medkit"></button>
+	</ion-nav-buttons>
+	<ion-content class="has-header">
+
+		<div
+		class="article-view"
+		ng-include src="'partials/'+articleData.folder+'/'+articleData.partialUrl+'.html'"
+		>
+		</div>
+
+	</ion-content>
+</ion-view>
