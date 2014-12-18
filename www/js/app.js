@@ -15,8 +15,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       StatusBar.styleDefault();
     }
     initPushwoosh();
+
   });
 })
+
+.config(function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    // Allow same origin resource loads.
+    'self',
+    // Allow loading from outer templates domain.
+    'http://www.ophthalmologymanagement.com/**',
+    'http://visioncare.advertserve.com/**'
+  ]);
+  //$sceProvider.enabled(false);
+})
+
 
 //---------------------
 // Angular-UI Routing
@@ -29,7 +42,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       views: {
         'menuContent' :{
           templateUrl: "templates/index.html",
-          controller: 'ExternalLinkCtrl'
+          controller: 'HomeCtrl'
         }
       }
     })
@@ -41,24 +54,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       controller: 'AppCtrl'
     })
 
-    .state('app.newsletters', {
-      url: "/newsletters",
+    .state('app.saved-articles', {
+      url: "/saved-articles",
       views: {
         'menuContent' :{
-          templateUrl: "templates/newsletters.html",
-          controller: 'NewslettersCtrl',
-          controller: 'ExternalLinkCtrl'
-        }
-      }
-    })
-
-    .state('app.newslettersIssue', {
-      url: "/newslettersIssue/{folder}/{partialUrl}",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/newslettersIssue.html",
-          controller: 'CurrentIssueCtrl',
-          controller: 'ExternalLinkCtrl'
+          templateUrl: "templates/saved-articles.html",
+          controller: 'SavedArticlesCtrl'
         }
       }
     })
@@ -67,8 +68,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       url: "/about",
       views: {
         'menuContent' :{
-          templateUrl: "templates/about.html",
-          controller: 'ExternalLinkCtrl'
+          templateUrl: "templates/about.html"
         }
       }
     })
@@ -84,7 +84,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     })
 
     .state('app.currentissue-article', {
-      url: "/currentissue-article/{folder}/{partialUrl}",
+      url: "/currentissue-article/{year}/{month}/{fileName}/{isDownloaded}/{articleID}",
       views: {
         'menuContent' :{
           templateUrl: "templates/currentissue-article.html",

@@ -1,11 +1,18 @@
 <ion-view title="Article">
 	<ion-nav-buttons side="right">
+		<ion-nav-button class="button-clear button" ng-click="saveArticle()" ng-hide="articleData.isDownloaded"> Download</ion-nav-button>
+		<ion-nav-button class="button-clear button" ng-click="deleteArticle()" ng-show="articleData.isDownloaded"><i class="icon ion-android-star"></i> Saved</ion-nav-button>
 	</ion-nav-buttons>
 	<ion-content class="has-header" id="currentIssue">
+
 		<div
 		class="article-view"
-		ng-include src="'partials/'+articleData.folder+'/'+articleData.partialUrl"
+		ng-include src="'http://www.ophthalmologymanagement.com/content/archive/'+articleData.year+'/'+articleData.month+'/'+articleData.fileName"
 		>
+			<!--
+			Launch an alert:
+			<h3>Unable to connect to the Internet. Check your network settings or signal strength and try again - OK (goes back to currentissue.html)</h3>
+			-->
 		</div>
 
 	</ion-content>

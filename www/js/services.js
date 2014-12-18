@@ -28,92 +28,108 @@ angular.module('starter.services', [])
 //---------------------
 // Services
 //----------------------------------------------------------------------------------------------
-.service('JSONPService', function($http){        
-  return {
-    getJSONP: function() {
-      //Pass in filename variable to make service generic
-      return $http.jsonp('http://www.erikflorida.com/pv/index.php?callback=JSON_CALLBACK');
-      //function JSON_CALLBACK(data) {
-        //console.log ("JSONP data = " + data);
-      //};
-        //$http.jsonp('http://erikflorida.com/pv/callback.json?callback=JSON_CALLBACK');
-      
-      //return $http.jsonp('http://www.ophthalmologymanagement.com/content/issueconfigfile/currentissue.js?callback=JSON_CALLBACK');
-    }
-  };
+.service('JSONPService', function($http){
+    return {
+        getJSONP: function() {
+            //Pass in filename variable to make service generic
+            //testing sample data: $http.jsonp('http://www.erikflorida.com/pv/index.php?callback=JSON_CALLBACK');
+            var url = 'http://www.ophthalmologymanagement.com/omd-currentissue.aspx?callback=JSON_CALLBACK';
+
+            return $http.jsonp(url)
+                .success(function(data){
+                    console.log('AngularJS jsonp success');
+                })
+                .error(function(data) {
+                    console.log('JSONP Failed!'+data);
+                });
+        }
+    };
 })
 
 .service('FileService', function($ionicLoading) {
   return {
-    downloadFile: function() {
-
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
-          fs.root.getDirectory(
-              "OMD/currentIssue/img",
-              {
-                  create: true
-              },
-              function(dirEntry) {
-                  dirEntry.getFile(
-                      "cover.jpg", 
-                      {
-                          create: true, 
-                          exclusive: false
-                      }, 
-                      function gotFileEntry(fe) {
-                          var p = fe.toURL();
-                          fe.remove();
-                          ft = new FileTransfer();
-                          ft.download(
-                              encodeURI("http://www.ophthalmologymanagement.com/content/images/cover/cover.jpg"),
-                              p,
-                              function(entry) {
-                                  alert('cover image load success!');
-                                  $scope.imgFile = entry.toURL();
-                                  return ($scope.imgFile);
-                              },
-                              function(error) {
-                                  alert("Download Error Source -> " + error.source);
-                              },
-                              false,
-                              null
-                          );
-                      }, 
-                      function() {
-                          console.log("Get file failed");
-                      }
-                  );
-              }
-          );
-      });
+    downloadFile: function(localFileInfo) {
+        $ionicLoading.show({
+            template: 'Loading...'
+        });
+        console.log('PRe-load window - remote file: http://www.ophthalmologymanagement.com/content/'+localFileInfo.remoteFolder+'/'+localFileInfo.remoteFileName);
+        console.log('PRe-load window - local file resources:'+localFileInfo.filePath+localFileInfo.fileName);
+        ionic.Platform.ready = function(){window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+                console.log('getting started...');
+                fs.root.getDirectory(
+                    localFileInfo.filePath,
+                    {
+                        create: true
+                    },
+                    function(dirEntry) {
+                        dirEntry.getFile(
+                            localFileInfo.fileName,
+                            {
+                                create: true,
+                                exclusive: false
+                            },
+                            function gotFileEntry(fe) {
+                                var p = fe.toURL();
+                                fe.remove();
+                                ft = new FileTransfer();
+                                ft.download(
+                                    encodeURI('http://www.ophthalmologymanagement.com/content/'+localFileInfo.remoteFolder+'/'+localFileInfo.remoteFileName),
+                                    p,
+                                    function(entry) {
+                                        $ionicLoading.hide();
+                                        $scope.imgFile = entry.toURL();
+                                        alert('Download file Success!');
+                                    },
+                                    function(error) {
+                                        $ionicLoading.hide();
+                                        alert("Download Error Source -> " + error.source);
+                                    },
+                                    false,
+                                    null
+                                );
+                            },
+                            function() {
+                                $ionicLoading.hide();
+                                alert("Get file failed");
+                            }
+                        );
+                    }
+                );
+            },
+        function() {
+            alert("Request for filesystem failed");
+        })};
     },
+
+
     loadFile: function() {
 
-      window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
-          fs.root.getDirectory(
-              "OMD/currentIssue/img",
-              {
-                  create: false
-              },
-              function(dirEntry) {
-                  dirEntry.getFile(
-                      "cover.jpg", 
-                      {
-                          create: false, 
-                          exclusive: false
-                      }, 
-                      function gotFileEntry(fe) {
-                          $ionicLoading.hide();
-                          return fe.toURL();
-                      }, 
-                      function(error) {
-                          $ionicLoading.hide();
-                          console.log("Error getting file");
-                      }
-                  );
-              }
-          );
-      });
+        window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+            fs.root.getDirectory(
+                locallocalFileInfo.filePath,
+                {
+                    create: false
+                },
+                function(dirEntry) {
+                    dirEntry.getFile(
+                        locallocalFileInfo.fileName,
+                        {
+                            create: false,
+                            exclusive: false
+                        },
+                        function gotFileEntry(fe) {
+                            $scope.savedFile = fe.toURL();
+                        },
+                        function(error) {
+                            console.log("Error getting file");
+                        }
+                    );
+                }
+            );
+        },
+        function() {
+            console.log("Error requesting filesystem");
+        });
     }
   };
  

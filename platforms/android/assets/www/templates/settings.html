@@ -5,40 +5,23 @@
       <button class="button button-clear" ng-click="closeSettings()">Close</button>
     </div>
   </ion-header-bar>
-  <ion-content>
-    <h1 class="item item-divider">Push Notifications</h1>
+  <ion-content ng-controller="SettingsCtrl">
+    <h1 class="item item-divider">Saved Articles</h1>
     <ul class="list">
-      <li class="item item-checkbox">
-        <label class="checkbox">
+      <li class="item item-toggle">
+        Push Notifications
+        <label class="toggle toggle-calm">
           <input type="checkbox" checked>
+          <div class="track">
+            <div class="handle"></div>
+          </div>
         </label>
-        Journal - New Issue
       </li>
-      <li class="item item-checkbox">
-        <label class="checkbox">
-          <input type="checkbox" checked>
-        </label>
-        Glaucoma Minute - New Issue
-      </li>
-      <li class="item item-checkbox">
-        <label class="checkbox">
-          <input type="checkbox" checked>
-        </label>
-        AMD Update - New Issue
-      </li>
-      <li class="item item-checkbox">
-        <label class="checkbox">
-          <input type="checkbox" checked>
-        </label>
-        Focus on Temto - New Issue
-      </li>
-      <li class="item item-checkbox">
-        <label class="checkbox">
-          <input type="checkbox" checked>
-        </label>
-        Cornea eUpdate - New Issue
+      <li class="item">
+        <button class="button button-block button-assertive" ng-click="showConfirm()" >Delete All Saved Articles</button>
       </li>
     </ul>
+
   </ion-content>
 </div>
 

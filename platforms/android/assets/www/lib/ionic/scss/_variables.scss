@@ -1,3 +1,22 @@
+
+// Colors
+// -------------------------------
+
+$light:                           #fff !default;
+$stable:                          #f8f8f8 !default;
+$positive:                        #4a87ee !default;
+$calm:                            #43cee6 !default;
+$balanced:                        #66cc33 !default;
+$energized:                       #f0b840 !default;
+$assertive:                       #ef4e3a !default;
+$royal:                           #8a6de9 !default;
+$dark:                            #444 !default;
+
+// Overrides
+$positive: #356b95;
+$calm: #015c52;
+$stable: #16a085;
+
 // Base
 // -------------------------------
 
@@ -85,9 +104,9 @@ $button-light-active-border:      #ccc !default;
 
 $button-stable-bg:                $stable !default;
 $button-stable-text:              #444 !default;
-$button-stable-border:            darken($stable, 15%) !default;
-$button-stable-active-bg:         darken($stable, 15%) !default;
-$button-stable-active-border:     darken($stable, 15%) !default;
+$button-stable-border:            #b2b2b2 !default;
+$button-stable-active-bg:         #e5e5e5 !default;
+$button-stable-active-border:     #a2a2a2 !default;
 
 $button-positive-bg:              $positive !default;
 $button-positive-text:            #fff !default;

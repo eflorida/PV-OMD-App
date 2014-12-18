@@ -3,43 +3,32 @@
 		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 	</ion-nav-buttons>
 	<ion-content class="has-header" id="home-page">
-		<img src="img/logo.png" />
-		<h2 style="text-align: center;">The Leading Practice Management Resource for Optometry</h2>
+		<img src="img/logo.png" class="titleImg" />
+		<h2 style="text-align: center;">Enhancing outcomes. Advancing your practice.</h2>
 		
 		<div class="item item-text-wrap">
 			<div class="item item-divider" >
 				<h3>Current Issue</h3>
 			</div>				
-			<a class="item item-thumbnail-left nav-clear fade-in" href="#/app/currentissue">
-				<img src="img/cover.jpg" />
-				<h3>October, 2014</h3>
-				<p>Read the latest Issue...</p>
+			<a ng-show="localCurrentIssueJSON[0].isLatest" class="item item-thumbnail-left nav-clear fade-in" href="#/app/currentissue">
+				<img src="http://www.ophthalmologymanagement.com/content/images/cover/cover.jpg" />
+				<h3>{{localCurrentIssueJSON[0].issueMonth}}, {{localCurrentIssueJSON[0].issueYear}}</h3>
+				<p>Read the latest Issue</p>
+			</a>
+			<a ng-hide="localCurrentIssueJSON[0].isLatest" class="item nav-clear fade-in" href="#/app/currentissue">
+				<button
+					class="button button-stable button-block"
+					ng-click="app/currentissue.html"
+					>New Issue Available - Download Now</button>
 			</a>
 		</div>
 		<div class="item item-text-wrap">
 			<div class="item item-divider" >
-				<h3>Newsletters</h3>
+				<h3>About Us</h3>
 			</div>				
-			<a class="item item-thumbnail-left nav-clear" href="#/app/newsletters">
-				<img src="img/imageplaceholder.jpg" />
-				<h3>Glaucoma Minute</h3>
-				<p>Monthly Newsletter</p>
-			</a>
-			<a class="item item-thumbnail-left nav-clear" href="#/app/newsletters">
-				<img src="img/amd update header.jpg" />
-				<h3>AMD Update</h3>
-				<p>Monthly Newsletter</p>
-			</a>
-			<a class="item item-thumbnail-left nav-clear" href="#/app/newsletters">
-				<img src="img/FEMTO_header.jpg" />
-				<h3>Focus on Femto</h3>
-				<p>Monthly Newsletter</p>
-			</a>
-			<a class="item item-thumbnail-left nav-clear" href="#/app/newsletters">
-				<img src="img/CorneaEUpdate_header.jpg" />
-				<h3>Cornea eUpdate</h3>
-				<p>Monthly Newsletter</p>
-			</a>
+			<div class="item item-body">
+				<p>Now more than ever before, ophthalmologists are required to think as an MD and a CEO. The right balance of clinical and practice management skills is critical for a practice to flourish. Each month only one publication delivers the essential strategies needed to navigate and grow today’s ophthalmology practice. Led by Chief Medical Editor Larry Patterson, MD, <em>Ophthalmology Management</em> provides all the tools ophthalmologists need to succeed, bringing them the latest practice management pearls, clinical advancements and medical economics they need to help their practices grow.</p>
+			</div>
 		</div>
 		
 	</ion-content>

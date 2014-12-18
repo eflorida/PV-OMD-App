@@ -21,7 +21,7 @@ $dark:                            #444 !default;
 
 // Overrides
 $positive: #356b95;
-$calm: #953535;
+$calm: #015c52;
 $stable: #16a085;
 
 // Include all of Ionic
@@ -58,6 +58,10 @@ p {
 	text-align: center;
 	font-weight: bold;
 	color: #454545;
+}
+
+.right-buttons a i {
+  font-size: 1.6rem;
 }
 
 //---------------------
@@ -124,19 +128,26 @@ p {
 	}
 	h4 {
 		font-size: 1.1rem;
+		line-height: 1.8rem;
+		vertical-align: top;
 		color: $positive;
 		white-space: normal;
 		margin-left: 0;
 		padding-left: 0;
 		i {
 			color: $positive;
+		  	font-size: 1.6rem;
+		  	margin-right: 6px;
+		  	&.invalid-icon {
+			  color: #dedede;
+			}
 		}
 	}
 	h5 {
 		font-size: 0.8rem;
 		font-style: italic;
 		font-weight: light;
-		color: #015c52;
+		color: $calm;
 	}
 	p {
 		font-size: 0.9rem;
@@ -144,6 +155,9 @@ p {
 			font-style: italic;
 		}
 	}
+  	.item .item-content {
+	  background-image: linear-gradient(#f8f8f8, #ffffff);
+  	}
 }
 
 
@@ -161,7 +175,7 @@ p {
 	 		margin: 0;
 	 	}
 	 	h4, h5 {
-	 		color: #015c52;
+	 		color: $calm;
 	 	}
 	 	h1 {
 	 		margin-bottom: -20px;
@@ -262,12 +276,27 @@ p {
 //---------------------
 // Newsletters
 //----------------------------------------------------------------------------------------------
-
 #newsletters {
 	h2 {
 		font-size: 22px;
 		padding-top: 6px;
 	}
+}
+
+
+//---------------------
+// Current Issue
+//----------------------------------------------------------------------------------------------
+.savedArticleMonth .item-complex:first-of-type {
+  display: none;
+}
+
+//---------------------
+// Settings
+//----------------------------------------------------------------------------------------------
+.toggle.toggle-calm input:checked+.track {
+  border-color: #16a085;
+  background-color: #16a085;
 }
 
 

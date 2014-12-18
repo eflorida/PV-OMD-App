@@ -10,10 +10,16 @@
 			<div class="item item-divider" >
 				<h3>Current Issue</h3>
 			</div>				
-			<a class="item item-thumbnail-left nav-clear fade-in" href="#/app/currentissue">
-				<img src="img/cover.jpg" />
-				<h3>October, 2014</h3>
-				<p>Read the latest Issue...</p>
+			<a ng-show="localCurrentIssueJSON[0].isLatest" class="item item-thumbnail-left nav-clear fade-in" href="#/app/currentissue">
+				<img src="http://www.ophthalmologymanagement.com/content/images/cover/cover.jpg" />
+				<h3>{{localCurrentIssueJSON[0].issueMonth}}, {{localCurrentIssueJSON[0].issueYear}}</h3>
+				<p>Read the latest Issue</p>
+			</a>
+			<a ng-hide="localCurrentIssueJSON[0].isLatest" class="item nav-clear fade-in" href="#/app/currentissue">
+				<button
+					class="button button-stable button-block"
+					ng-click="app/currentissue.html"
+					>New Issue Available - Download Now</button>
 			</a>
 		</div>
 		<div class="item item-text-wrap">

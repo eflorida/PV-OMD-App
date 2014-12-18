@@ -3,33 +3,23 @@
 		<button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
 	</ion-nav-buttons>
 	<ion-content class="has-header">
-		<h1>Saved Articles</h1>
 		<ion-list class="list current-issue">
-			<div class="item item-divider">
-				<h3>Tip of the Week</h3>
-			</div>
-			<ion-item
-			class="item"
-			href="#/app/currentissue-article/{{contentSet.partialUrl}}"
-			ng-repeat="contentSet in contentSets | filter:category='Features'"
-			>
-				<h4>{{contentSet.title}}</h4>
-				<h5>{{contentSet.subTitle}}</h5>
-				<p><em>By:</em> {{contentSet.author}}</p>
-			</ion-item>
 
-			<div class="item item-divider">
-				<h3>Recent Issues</h3>
+			<div ng-repeat="issuedates in localSavedArticlesJSON[0].issueDates" class="savedArticleMonth">
+				<div class="item item-divider">
+					<h3>{{localSavedArticlesJSON[0].formattedDates[$index]}}</h3>
+				</div>
+				<ion-item
+				class="item"
+				href="#/app/currentissue-article/{{metaContentSet.issueYear}}/{{metaContentSet.issueMonth}}/{{featuredContentSet.fileName}}/{{featuredContentSet.articleID}}"
+				ng-repeat="articleSet in localSavedArticlesJSON | filter:issueDate = issuedates"
+				>
+					<h4>{{articleSet.title}}</h4>
+					<h5>{{articleSet.subTitle}}</h5>
+					<p><em>By:</em> {{articleSet.author}}</p>
+				</ion-item>
 			</div>
-			<ion-item
-			class="item"
-			href="#/app/currentissue-article/{{contentSet.partialUrl}}"
-			ng-repeat="contentSet in contentSets | filter:category='Department'"
-			>
-				<h4>{{contentSet.title}}</h4>
-				<h5>{{contentSet.subTitle}}</h5>
-				<p><em>By:</em> {{contentSet.author}}</p>
-			</ion-item>
+
 		</ion-list>
 	</ion-content>
 </ion-view>
