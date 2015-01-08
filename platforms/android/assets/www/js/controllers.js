@@ -21,14 +21,14 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('CurrentIssueCtrl', function($scope, $http, $localstorage, JSONPService) {
+.controller('CurrentIssueCtrl', function($scope, $http, $localstorage, JSONPService, $ionicLoading) {
       //Global variable for testing
-      $scope.devMode = false;
+      $scope.devMode = true; //TODO remove for production
       
   //If the file already exists in local storage, use it
   $scope.localJSON = function(){
     //Try to load from local storage on page load
-    console.log('localJSON: Initial page load');
+    //console.log('localJSON: Initial page load');
     $scope.localCurrentIssueJSON = JSON.parse(window.localStorage['localCurrentIssue'] || '{}');
 
     //Automatically compare local JSON with server
@@ -43,27 +43,82 @@ angular.module('starter.controllers', [])
 
         .then(function (response) {
           //Save response to local storage as a string (can't save objects)
-          console.log('getJSONP: Save JSONP to local storage');
           window.localStorage['localCurrentIssue'] = JSON.stringify(response.data);
 
           //Parse local storage string as JSON
           $scope.localCurrentIssueJSON = JSON.parse(window.localStorage['localCurrentIssue'] || '{}');
+
+          //download the cover image
+          $scope.download = function() {
+            $ionicLoading.show({
+              template: 'Loading...'
+            });
+            window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
+                  fs.root.getDirectory(
+                      "ExampleProject",
+                      {
+                        create: true
+                      },
+                      function(dirEntry) {
+                        dirEntry.getFile(
+                            "test.png",
+                            {
+                              create: true,
+                              exclusive: false
+                            },
+                            function gotFileEntry(fe) {
+                              var p = fe.toURL();
+                              fe.remove();
+                              ft = new FileTransfer();
+                              ft.download(
+                                  encodeURI("http://ionicframework.com/img/ionic-logo-blog.png"),
+                                  p,
+                                  function(entry) {
+                                    $ionicLoading.hide();
+                                    $scope.imgFile = entry.toURL();
+                                    alert('success!');
+                                  },
+                                  function(error) {
+                                    $ionicLoading.hide();
+                                    alert("Download Error Source -> " + error.source);
+                                  },
+                                  false,
+                                  null
+                              );
+                            },
+                            function() {
+                              $ionicLoading.hide();
+                              console.log("Get file failed");
+                            }
+                        );
+                      }
+                  );
+                },
+                function() {
+                  $ionicLoading.hide();
+                  console.log("Request for filesystem failed");
+                });
+          };
+
+          $scope.download();
+
         });
 
+    //TODO Implement cover image download
     //Download latest cover image
-    $scope.localFileInfo = {
-        remoteFolder: 'images/cover',
-        remoteFileName: 'cover.jpg',
-        filePath: 'OMD/currentIssue/img',
-        fileName: 'cover.jpg'
-      };
-
+    //$scope.localFileInfo = {
+    //    remoteFolder: 'images/cover',
+    //    remoteFileName: 'cover.jpg',
+    //    filePath: 'OMD/currentIssue/img',
+    //    fileName: 'cover.jpg'
+    //  };
     //FileService.downloadFile($scope.localFileInfo)
     //
     //.then(function (response) {
     //  console.log('dynamic cover image file successfully downloaded!');
     //  $scope.localImgFile = response;
     //});
+
 
   };
 
@@ -110,74 +165,87 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('CurrentIssueArticleCtrl', function($scope, $http, $stateParams, $ionicModal, $filter, FileService) {
+.controller('CurrentIssueArticleCtrl', function($scope, $http, $stateParams, $ionicModal, $filter) {
   //Pass article URL data to the ng-include for currentIssue-article.html
   $scope.articleData = $stateParams;
 
   //Save Article to local storage
   $scope.saveArticle = function(){
     console.log('saveArticle started...');
-    //Parse local saved articles JSON - create empty array if file doesn't exist
-    $scope.localSavedArticlesJSON = JSON.parse(window.localStorage['localSavedArticles'] || '{}');
-    //Get Current Issue metaData array and this article array
-    $scope.localCurrentIssueJSON = JSON.parse(window.localStorage['localCurrentIssue'] || '{}');
 
+    //Parse local saved articles JSON - create empty object if file doesn't exist
+    $scope.localSavedArticlesJSON = JSON.parse(window.localStorage['localSavedArticles'] || '{}');
+    console.log('localSavedArticlesJSON loaded:'+JSON.stringify($scope.localSavedArticlesJSON));
+    //Get Current Issue metaData
+    $scope.localCurrentIssueJSON = JSON.parse(window.localStorage['localCurrentIssue'] || '{}');
+    //filter localCurrentIssueJSON so only the current article content exists
     $scope.filteredArticleArray = $filter('filter')($scope.localCurrentIssueJSON, $scope.localCurrentIssueJSON.articleID = $scope.articleData.articleID);
+
+    //Add current Article meta to filtered array
+    $scope.filteredArticleArray[0]["issueDate"] = $scope.localCurrentIssueJSON[0].issueDate;
+    $scope.filteredArticleArray[0]["issueMonth"] = $scope.localCurrentIssueJSON[0].issueMonth;
+    $scope.filteredArticleArray[0]["issueYear"] = $scope.localCurrentIssueJSON[0].issueYear;
+    console.log('filteredArticleArray = '+JSON.stringify($scope.filteredArticleArray));
+
     if ($scope.filteredArticleArray[0].articleID) {
+
+      //console.log('filtered articleID exists, value= '+$scope.articleData.articleID);
       $scope.articleData.isDownloaded = true;
       //push isDownloaded = true in localCurrentIssueJSON[i] where articleID=$scope.articleData.articleID
       angular.forEach($scope.localCurrentIssueJSON, function(u, i){
         if (u.articleID === $scope.articleData.articleID){
+          //console.log('articleID matches CurrentIssue, update THIS isDownloaded to true');
           //save file to local storage and update JSON config isDownloaded value
           //Set the value
           $scope.localCurrentIssueJSON[i].isDownloaded = true;
           //Save updated JSON file to localStorage
           window.localStorage['localCurrentIssue'] = JSON.stringify($scope.localCurrentIssueJSON);
-          //Save the .html file to file system
-          //$scope.localFileInfo = {
-          //  remoteFolder: 'archive',
-          //  remoteFileName: $scope.articleData.fileName,
-          //  filePath: 'OMD/savedArticles/'+$scope.articleData.year+'/'+$scope.articleData.month+'/',
-          //  fileName: $scope.articleData.fileName
-          //};
-          //
-          //FileService.downloadFile($scope.localFileInfo)
-          //    .then(function () {
-          //      console.log('file successfully downloaded!');
-          //    });
         }
       });
-      //Check if any article with same issueDate has already been saved - aka, issueDate exists in savedArticle issueDates
-      $scope.firstSaveCurrentMonth = true;
-      angular.forEach($scope.localSavedArticlesJSON[0].issueDates, function(u, i){
-        if ($scope.localCurrentIssueJSON[0].issueDate === u) {
-          $scope.firstSaveCurrentMonth = false;
-        };
-      });
-      if ($scope.firstSaveCurrentMonth) {
-        //First save from issue, save issueDate to savedArticle issueDates array
-        $scope.localSavedArticlesJSON[0].issueDates.push($scope.localCurrentIssueJSON[0].issueDate);
-        $scope.localSavedArticlesJSON[0].formattedDates.push($scope.localCurrentIssueJSON[0].issueMonth+', '+$scope.localCurrentIssueJSON[0].issueYear);
-      };
-      //Check to see if article with same ID already exists in savedArticlesJSON, if not, concat array
-      $scope.newSavedarticle = true;
-      angular.forEach($scope.localSavedArticlesJSON, function(u, i){
-        if ($scope.filteredArticleArray.articleID = u.articleID) {
-          $scope.alreadySavedarticle = false;
-        };
-      });
-      if ($scope.newSavedarticle) {
-        //Add filteredArticleArray to local savedArticle array, then save full array to localStorage
-        //First add issueDate/month/year from localCurrentIssueJSON into filteredArticleArray
-        $scope.filteredArticleArray[0]["issueDate"] = $scope.localCurrentIssueJSON[0].issueDate;
-        $scope.filteredArticleArray[0]["issueMonth"] = $scope.localCurrentIssueJSON[0].issueMonth;
-        $scope.filteredArticleArray[0]["issueYear"] = $scope.localCurrentIssueJSON[0].issueYear;
 
+      ////Check if any article with same issueDate has already been saved - aka, issueDate exists in savedArticle issueDates
+      $scope.newArticleIssueDate = true;
+      console.log('$scope.localSavedArticlesJSON[0].issueDates.length='+$scope.localSavedArticlesJSON[0].issueDates.length);
+      if($scope.localSavedArticlesJSON[0].issueDates.length > 0){
+        angular.forEach($scope.localSavedArticlesJSON[0].issueDates, function(u, i){
+          console.log('Current issueDate in saved file: '+u);
+          if ($scope.localCurrentIssueJSON[0].issueDate === u) {
+            $scope.newArticleIssueDate = false;
+            console.log('article issue date already exists in local saved file, no need to concat');
+
+          };
+        });
+      };
+
+
+      if ($scope.newArticleIssueDate) {
+        console.log('First file saved with this issueDate, so add date, month, year, then add to localSaved issueDates and displayDates');
+
+        $scope.localSavedArticlesJSON[0].issueDates.push($scope.localCurrentIssueJSON[0].issueDate);
+        $scope.localSavedArticlesJSON[0].displayDates.push($scope.localCurrentIssueJSON[0].issueMonth+', '+$scope.localCurrentIssueJSON[0].issueYear);
+
+        window.localStorage['localSavedArticles'] = JSON.stringify($scope.localSavedArticlesJSON);
+        console.log('issueDates and displayDates updated!');
+      }
+
+      $scope.newArticleID = true;
+      //Check to see if article with same ID already exists in savedArticlesJSON, if not, concat array
+      console.log('checking if filteredArticleArray.articleID is equal to any savedArticleIDs - current val='+JSON.stringify($scope.filteredArticleArray[0].articleID));
+      if($scope.localSavedArticlesJSON.length > 1){
+        angular.forEach($scope.localSavedArticlesJSON, function(u, i){
+          if ($scope.filteredArticleArray[0].articleID === u.articleID) {
+            $scope.newArticleID = false;
+            console.log('NOT a new articleID, localSaved array: '+JSON.stringify($scope.localSavedArticlesJSON));
+          };
+        });
+      }
+
+
+      if ($scope.newArticleID) {
         $scope.localSavedArticlesJSON = $scope.localSavedArticlesJSON.concat($scope.filteredArticleArray);
         window.localStorage['localSavedArticles'] = JSON.stringify($scope.localSavedArticlesJSON);
         console.log('Filtered Array - '+JSON.stringify($scope.localSavedArticlesJSON));
-      };
-
+      }
     }
   };
 
@@ -191,12 +259,12 @@ angular.module('starter.controllers', [])
   // Create the modal that we will use later
   $ionicModal.fromTemplateUrl('templates/interAd-modal.html', {
     scope: $scope })
-    .then(function(modal) {
-      //Display the modal
-      $scope.modal = modal;
-      //If internet connection is available - show ad
+      .then(function(modal) {
+        //Display the modal
+        $scope.modal = modal;
+        //If internet connection is available - show ad
         $scope.showInterAd();
-    });
+      });
 
   // Triggered in the modal to close it
   $scope.closeInterAd = function() {
@@ -209,67 +277,70 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('SavedArticlesCtrl', function($scope) {
-      var loadSampleArticleData =
-          [
-            {
-              "issueDates"    : ["201403", "201411", "201412"],
-              "formattedDates": ["March, 2014", "November, 2014", "December, 2014"]
-            },
-            {
-              "title"         :"DME drugs multiply",
-              "author"        :"By Veeral S. Sheth, MD, MBA, FACS and Seenu M. Hariprasad, MD",
-              "subTitle"      :"Two new steroid implants offer two-pronged attack, durability.",
-              "issueDate"     :"201411",
-              "issueMonth"    :"November",
-              "issueYear"     :"2014",
-              "fileName"      :"OMD_November_A04.html"
-            },
-            {
-              "title"         :"Diabetes, the eye, and the treatment of both",
-              "author"        :"By Erik Florida, Contributing Editor",
-              "subTitle"      :"Diabetic eye disease creates a major challenge in the development of vision-sustaining drugs.",
-              "issueDate"     :"201411",
-              "issueMonth"    :"November",
-              "issueYear"     :"2014",
-              "fileName"      :"OMD_November_A05.html"
-            },
-            {
-              "title"         :"Which DME patients are right for surgery?",
-              "author"        :"By Apurva Patel, MD",
-              "subTitle"      :"Despite an expanding formulary to treat diabetic macular edema, some patients\' singular situations call for a surgical approach.",
-              "issueDate"     :"201412",
-              "issueMonth"    :"December",
-              "issueYear"     :"2014",
-              "fileName"      :"OMD_November_A06.html"
-            },
-            {
-              "title"         :"A photographer\'s perspective on DME imaging",
-              "author"        :"By Bill Kekevian, Senior Associate Editor",
-              "subTitle"      :"While some practices rely solely on OCT, others continue to depend on fluorescein angiography.",
-              "issueDate"     :"201403",
-              "issueMonth"    :"March",
-              "issueYear"     :"2014",
-              "fileName"      :"OMD_November_A07.html"
-            }];
-  //window.localStorage['localSavedArticles'] = JSON.stringify(loadSampleArticleData);
+.controller('SavedArticlesCtrl', function($scope, $ionicPopup) {
+  if(!window.localStorage['localSavedArticles']){
+    console.log('No localSavedArticles Found');
+    window.localStorage['localSavedArticles'] = '[{"issueDates" : [], "displayDates" : []},{}]';
+  }
+
   //Load saved articles json from local Storage, or create new empty array
   $scope.localSavedArticlesJSON = JSON.parse(window.localStorage['localSavedArticles'] || '{}');
-  //console.log('From Local Storage - '+JSON.stringify($scope.localSavedArticlesJSON));
-  //$scope.sortedDates = {};
-  //angular.forEach($scope.localSavedArticlesJSON[0].issueDates, function(currentDate, i){
-  //  //for each $scope.localSavedArticlesJSON where u = u2, add to currentMonth array
-  //  angular.forEach($scope.localSavedArticlesJSON, function(articleDate, ii){
-  //    if (articleDate.issueDate == currentDate) {
-  //      var thisDate = articleDate.issueMonth+', '+articleDate.issueYear;
-  //      $scope.sortedDates.push(thisDate);
-  //      $scope.articleSets = $scope.articleSets.concat($scope.localSavedArticlesJSON[ii]);
-  //    }
-  //  });
-  //  console.log('sortedDates: '+$scope.sortedDates);
-  //  console.log('articleSets: '+JSON.parse($scope.articleSets));
-  //});
+  $scope.localCurrentIssueJSON = JSON.parse(window.localStorage['localCurrentIssue'] || '{}');
 
+  //Delete All Articles
+  $scope.showConfirm = function() {
+    var confirmPopup = $ionicPopup.confirm({
+      title: 'Delete All Articles',
+      template: 'Are you sure you want to delete all articles? This cannot be undone.'
+    });
+
+    confirmPopup.then(function(res) {
+      if(res) {
+        console.log('I am sure');
+        //delete all physical files
+        //TODO add file delete service
+        //change isDownloaded value for all articles in currentIssue
+        angular.forEach($scope.localCurrentIssueJSON, function(u, i){
+            if (u.articleID){
+              //change isDownloaded value
+              $scope.localCurrentIssueJSON[i].isDownloaded = false;
+              //Save updated JSON file to localStorage
+              console.log('this article: '+$scope.localCurrentIssueJSON[i].title+' IS no longer downloaded.');
+              window.localStorage['localCurrentIssue'] = JSON.stringify($scope.localCurrentIssueJSON);
+            }
+        });
+        //reset localSavedArticles array
+        window.localStorage['localSavedArticles'] = '[{"issueDates" : [], "displayDates" : []},{}]';
+        $scope.localSavedArticlesJSON = JSON.parse(window.localStorage['localSavedArticles'] || '{}');
+      } else {
+        console.log('Cancel, do not delete');
+      }
+    });
+  };
+
+  $scope.deleteArticle = function(articleID) {
+    angular.forEach($scope.localSavedArticlesJSON, function(u, i){
+      if (articleID = u.articleID) {
+        //deleted articleID matches THIS articleID from saved articles, remove this node from file and re-save
+        $scope.localSavedArticlesJSON.splice(i,1);
+        window.localStorage['localSavedArticles'] = JSON.stringify($scope.localSavedArticlesJSON);
+        console.log('localSavedArticlesJSON after splice: '+JSON.stringify($scope.localSavedArticlesJSON));
+      };
+    });
+
+  };
+
+
+  //Use this function to trigger links to open in browser
+  $scope.GotoLink = function (url) {
+    window.open(url,'_system');
+  };
+
+})
+
+.controller('SavedIssueArticleCtrl', function($scope, $http, $stateParams, FileService) {
+  //Pass article URL data to the ng-include for currentIssue-article.html
+  $scope.articleData = $stateParams;
 
   //Use this function to trigger links to open in browser
   $scope.GotoLink = function (url) {
@@ -338,7 +409,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-// Action-Based Controllers - services?
+// Action-Based Controllers
 //--------------------------------------
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal

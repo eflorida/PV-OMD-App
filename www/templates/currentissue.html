@@ -41,10 +41,10 @@
 			</div>
 			<ion-item
 			class="item departments"
-			href="#/app/currentissue-article/{{departmentsContentSet.issueYear}}/{{departmentsContentSet.issueMonth}}/{{departmentsContentSet.fileName}}/{{departmentsContentSet.isDownloaded}}/{{departmentsContentSet.articleID}}"
+			href="#/app/currentissue-article/{{metaContentSet.issueYear}}/{{metaContentSet.issueMonth}}/{{departmentsContentSet.fileName}}/{{departmentsContentSet.isDownloaded}}/{{departmentsContentSet.articleID}}"
 			ng-repeat="departmentsContentSet in localCurrentIssueJSON | filter:category='Department' | filter:articleID"
 			>
-				<h4><i class="icon ion-android-star" ng-show="departmentsContentSet.isDownloaded"></i><i class="icon ion-android-star invalid-ico" ng-hide="featuredContentSet.isDownloaded"></i>{{departmentsContentSet.title}}</h4>
+				<h4><i class="icon ion-android-star" ng-show="departmentsContentSet.isDownloaded"></i><i class="icon ion-android-star invalid-icon" ng-hide="departmentsContentSet.isDownloaded"></i>{{departmentsContentSet.title}}</h4>
 				<h5>{{departmentsContentSet.subTitle}}</h5>
 				<p><em>By:</em> {{departmentsContentSet.author}}</p>
 			</ion-item>

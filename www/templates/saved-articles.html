@@ -26,11 +26,13 @@
 			ng-show="localSavedArticlesJSON[0].issueDates.length < 1">
 			<h3>No Saved Articles at this time</h3>
 			<p>Go to the current issue and click "Save" when viewing an article to save for offline reading.</p>
-			<a
-				href="/#/app/currentissue"
+			<a class="nav-clear fade-in" href="#/app/currentissue">
+			<button
+				ng-click="app/currentissue.html"
 				class="button button-block button-positive"
 				nav-clear
-				>Current Issue</a>
+				>Current Issue</button>
+			</a>
 		</div>
 
 		<button
