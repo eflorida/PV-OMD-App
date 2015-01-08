@@ -23,7 +23,7 @@ angular.module('starter.controllers', [])
 
 .controller('CurrentIssueCtrl', function($scope, $http, $localstorage, JSONPService, $ionicLoading) {
       //Global variable for testing
-      $scope.devMode = true; //TODO remove for production
+      $scope.devMode = false; //TODO remove for production
       
   //If the file already exists in local storage, use it
   $scope.localJSON = function(){
@@ -98,6 +98,7 @@ angular.module('starter.controllers', [])
                   $ionicLoading.hide();
                   console.log("Request for filesystem failed");
                 });
+            $ionicLoading.hide();
           };
 
           $scope.download();
