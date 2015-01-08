@@ -52,8 +52,8 @@ angular.module('starter.services', [])
         $ionicLoading.show({
             template: 'Loading...'
         });
-        console.log('PRe-load window - remote file: http://www.ophthalmologymanagement.com/content/'+localFileInfo.remoteFolder+'/'+localFileInfo.remoteFileName);
-        console.log('PRe-load window - local file resources:'+localFileInfo.filePath+localFileInfo.fileName);
+        //console.log('PRe-load window - remote file: http://www.ophthalmologymanagement.com/content/'+localFileInfo.remoteFolder+'/'+localFileInfo.remoteFileName);
+        //console.log('PRe-load window - local file resources:'+localFileInfo.filePath+localFileInfo.fileName);
         ionic.Platform.ready = function(){window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(fs) {
                 console.log('getting started...');
                 fs.root.getDirectory(
@@ -134,6 +134,8 @@ angular.module('starter.services', [])
   };
  
 });
+
+
 
 //---------------------
 // Directives

@@ -255,7 +255,7 @@ angular.module('starter.controllers', [])
   //window.localStorage['localSavedArticles'] = JSON.stringify(loadSampleArticleData);
   //Load saved articles json from local Storage, or create new empty array
   $scope.localSavedArticlesJSON = JSON.parse(window.localStorage['localSavedArticles'] || '{}');
-  console.log('From Local Storage - '+JSON.stringify($scope.localSavedArticlesJSON));
+  //console.log('From Local Storage - '+JSON.stringify($scope.localSavedArticlesJSON));
   //$scope.sortedDates = {};
   //angular.forEach($scope.localSavedArticlesJSON[0].issueDates, function(currentDate, i){
   //  //for each $scope.localSavedArticlesJSON where u = u2, add to currentMonth array
@@ -387,9 +387,9 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ExternalLinkCtrl', function() {
+.controller('ExternalLinkCtrl', function($scope) {
 
-  this.GotoLink = function (url) {
+  $scope.GotoLink = function (url) {
     window.open(url,'_system');
 
     //How to use in app:

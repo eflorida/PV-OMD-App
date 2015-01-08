@@ -140,12 +140,13 @@
         "org.apache.cordova.device": {
             "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
         },
-        "org.apache.cordova.file": {
-            "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
-        },
         "org.apache.cordova.file-transfer": {
             "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "org.apache.cordova.file": {
+            "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
+        }
+    }
 }

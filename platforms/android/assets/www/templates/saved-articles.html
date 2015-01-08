@@ -11,7 +11,7 @@
 				</div>
 				<ion-item
 				class="item"
-				href="#/app/currentissue-article/{{articleSet.partialUrl}}"
+				href="#/app/currentissue-article/{{metaContentSet.issueYear}}/{{metaContentSet.issueMonth}}/{{featuredContentSet.fileName}}/{{featuredContentSet.articleID}}"
 				ng-repeat="articleSet in localSavedArticlesJSON | filter:issueDate = issuedates"
 				>
 					<h4>{{articleSet.title}}</h4>

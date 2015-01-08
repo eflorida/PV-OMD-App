@@ -77,22 +77,22 @@
     },
     "installed_plugins": {
         "com.ionic.keyboard": {
-            "PACKAGE_NAME": "com.pentavision.omd.newissue.test"
+            "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
         },
         "com.pushwoosh.plugins.pushwoosh": {
-            "PACKAGE_NAME": "com.pentavision.omd.newissue.test"
+            "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
         },
         "org.apache.cordova.console": {
-            "PACKAGE_NAME": "com.pentavision.omd.newissue.test"
+            "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
         },
         "org.apache.cordova.device": {
-            "PACKAGE_NAME": "com.pentavision.omd.newissue.test"
+            "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
         },
         "org.apache.cordova.file": {
-            "PACKAGE_NAME": "com.pentavision.omd.newissue.test"
+            "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
         },
         "org.apache.cordova.file-transfer": {
-            "PACKAGE_NAME": "com.pentavision.omd.newissue.test"
+            "PACKAGE_NAME": "com.pentavision.omd.pushwoosh.newIssue"
         }
     },
     "dependent_plugins": {}

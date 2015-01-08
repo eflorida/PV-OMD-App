@@ -64,6 +64,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
+    .state('app.savedissue-article', {
+      url: "/savedissue-article/{year}/{month}/{fileName}/{articleID}",
+      views: {
+        'menuContent' :{
+          templateUrl: "templates/savedissue-article.html",
+          controller: 'SavedIssueArticleCtrl'
+        }
+      }
+    })
+
     .state('app.about', {
       url: "/about",
       views: {
